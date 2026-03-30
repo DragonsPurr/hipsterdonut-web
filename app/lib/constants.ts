@@ -8,6 +8,7 @@ const envConfig = {
 };
 
 const asset_base_url = "https://dp-hd-assets.tor1.digitaloceanspaces.com";
+const alt_base_url = "https://dp-assets.tor1.digitaloceanspaces.com";
 
 const externalLinkAttributes = { target: "_blank", rel: "noreferrer" as const };
 
@@ -18,7 +19,7 @@ const siteInfo = {
   phone: "+1 (416) 555-1234",
   address: "608-26 Carluke Crescent, Toronto, ON M2L 2J2",
   hours: "Monday - Friday: 9:00 AM - 5:00 PM",
-  description: "Hipster Donut Apparel is a Toronto-Based Creative Duo that makes things",
+  description: "Hipster Donut Apparel is a Dragon's Purr Brand that specializes in apparel featuring dopey-as-hell pop-culture mashups, culturejamming, and overall sardonic, eye-rolling humour befitting its obvious elder millennial audience.",
 };
 
 const socialMedia = {
@@ -37,4 +38,4 @@ const logoTypes = {
   favicon: `${asset_base_url}/brand/hipsterdonut_square-favicon.png`,
 };
 
-export { asset_base_url, externalLinkAttributes, logoTypes, siteInfo, socialMedia, envConfig };
+export { asset_base_url, alt_base_url, externalLinkAttributes, logoTypes, siteInfo, socialMedia, envConfig };
