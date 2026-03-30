@@ -1,0 +1,233 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-title: coffee-service, sans-serif;
+  --font-body: ff-good-headline-web-pro, sans-serif;
+  /* font-family cannot include weight — use font-weight separately (Typekit maps weights by numeric value) */
+  --font-body-bold-weight: 700;
+}
+
+/* Same family as font-body; weight comes from --font-body-bold-weight */
+@utility font-body-bold {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-bold-weight);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility hd-page-header {
+  @apply font-title text-4xl md:text-[60px]
+  text-(--hd-title-yellow) leading-none mb-8 md:mb-12;
+  text-shadow: 2px 2px 0 rgb(0 0 0 / 1);
+}
+
+@utility hd-section-header {
+  @apply font-title text-2xl md:text-4xl 
+  text-(--hd-title-yellow);
+  text-shadow: 2px 2px 0 rgb(0 0 0 / 1);
+}
+
+@utility hd-circular-image {
+  /* Used with next/image fill: cover square parent for a true circle */
+  /* Posterize via SVG filter #hd-about-posterize (defs in AboutPageView) */
+  @apply object-cover rounded-full z-0 border-8 border-(--hd-dark-blue);
+  filter: url(#hd-about-posterize);
+}
+
+/* Outer shell: shadow must not sit on an overflow-hidden clip (it would be cut off). */
+@utility hd-about-portrait-shadow {
+  @apply aspect-square w-full max-w-[500px];
+  filter: drop-shadow(8px 8px 8px rgb(0 0 0 / 1));
+}
+
+@utility hd-about-portrait-wrap {
+  /* About page: purple tint over portrait (see --dv-dark-purple) */
+  @apply relative isolate h-full w-full rounded-full overflow-hidden saturate-125 contrast-125;
+  /* Hue/saturation tint — reads more “purple” than multiply alone */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--hd-dark-blue);
+    opacity: 0.55;
+    mix-blend-mode: color;
+    pointer-events: none;
+    z-index: 1;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--hd-dark-blue);
+    opacity: 0.62;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+@utility home-page-logo {
+  @apply w-full max-w-xs sm:max-w-sm md:max-w-lg;
+  filter: drop-shadow(8px 8px 8px rgb(0 0 0 / 0.5));
+}
+
+@utility hd-body-text {
+  @apply font-body text-xl md:text-2xl;
+}
+
+@utility hd-nav-bar {
+  @apply bg-(--hd-alt-green) w-full flex 
+  justify-center pt-2.5 md:pr-[100px] 
+  sticky top-0 z-50 border-b-4 border-(--hd-dark-blue) 
+  pb-2 px-3 md:px-0
+  drop-shadow-[2px_2px_4px_rgb(0_0_0)];
+}
+
+@utility hd-footer-bar {
+  @apply md:fixed md:bottom-0 md:left-0 md:right-0 
+  z-10 bg-(--hd-alt-green) w-full py-3 md:py-4 
+  border-t-4 border-(--hd-dark-blue) pt-2
+  drop-shadow-[2px_2px_4px_rgb(0_0_0)];
+}
+
+@utility hd-body-text-bold {
+  @apply font-body-bold text-xl md:text-2xl;
+}
+
+@utility hd-link {
+  @apply text-black no-underline 
+  hover:text-(--hd-light-blue) 
+  target:text-(--hd-light-blue);
+}
+
+@utility hd-footer-link {
+  @apply text-black no-underline
+  hover:text-(--hd-donut-pink)
+  target:text-(--hd-donut-pink);
+}
+
+@utility hd-nav-logo {
+  @apply w-36 sm:w-44 md:w-60 h-auto;
+}
+
+@utility hd-nav-item {
+  @apply flex flex-wrap justify-end gap-2 md:gap-4 
+  font-title text-(--hd-title-yellow) 
+  hover:text-(--hd-donut-pink)
+  focus:text-(--hd-donut-pink)
+  text-lg md:text-4xl;
+  text-shadow: 1.5px 1.5px 0 rgb(0 0 0 / 1);
+}
+
+@utility hd-nav-item-active {
+  @apply text-(--hd-donut-pink) no-underline 
+  hover:text-(--hd-light-blue)
+  focus:text-(--hd-light-blue);
+}
+
+@utility hd-form-label {
+  @apply block font-title text-2xl mb-1 text-(--hd-title-yellow);
+  text-shadow: 1px 1px 0 rgb(0 0 0 / 1);
+}
+
+@utility hd-form-input {
+  @apply w-full font-body text-lg px-3 py-2 rounded-md 
+  border border-(--hd-gray-600) 
+  bg-(--hd-bkgd-color) text-black
+  drop-shadow-[2px_2px_0_rgb(0_0_0)];
+}
+
+@utility hd-form-button {
+  @apply font-title text-lg px-4 py-2 
+  rounded-md bg-(--hd-dark-blue) 
+  text-white hover:bg-(--hd-light-blue)
+  drop-shadow-[2px_2px_0_rgb(0_0_0)];
+}
+
+@utility hd-main-content {
+  @apply flex-1 flex justify-center items-start 
+  md:items-center pt-12 px-4 pb-28 md:pb-24;
+}
+
+@layer utilities {
+  /* Brand Colors */
+  :root {
+    --hd-bkgd-color: #ffffff;
+    --hd-light-blue: #74d3fd;
+    --hd-dark-blue: #64aecc;
+    --hd-alt-green: #84c8bd;
+    --hd-donut-pink: #ef548f;
+    --hd-light-brown: #f3a973;
+    --hd-dark-brown: #7c5d4d;
+    --hd-title-yellow: #f7931e;
+    --hd-gray-800: #1f2937;
+    --hd-gray-600: #4b5563;
+    --hd-donut-bg-tile: url('https://dp-hd-assets.tor1.digitaloceanspaces.com/brand/donut-bg.png');
+  }
+
+  html {
+    @apply min-h-full m-0;
+    background-color: var(--hd-bkgd-color);
+  }
+
+  body {
+    @apply text-black min-h-full m-0;
+    font-family:
+      var(--font-title),
+      var(--font-body),
+      -apple-system,
+      BlinkMacSystemFont,
+      'Times New Roman',
+      serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--hd-bkgd-color);
+    /* ~25% tile visibility: 75% opaque wash over the repeat layer.
+       Avoid color-mix(..., transparent): in sRGB, transparent is rgba(0,0,0,0) and can mix
+       to an effectively opaque white, hiding the tile. Use explicit alpha instead. */
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)),
+      var(--hd-donut-bg-tile);
+    background-size: 100% 100%, auto;
+    background-position: 0 0, 0 0;
+    background-repeat: no-repeat, repeat;
+    /* Fixed to viewport so the tile + wash stay put while content scrolls */
+    background-attachment: fixed, fixed;
+  }
+}
+
+/* Sanity Studio: fill viewport so no browser scroll */
+.studio-full-height {
+  height: 100%;
+}
+.studio-full-height > * {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+/* Social icon tint: site red (#dc2626 / red-600) */
+.img-[red-600] {
+  filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+.img-red-600:hover {
+  filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(114%) contrast(97%);
+}

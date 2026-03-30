@@ -1,0 +1,63 @@
+// SweetAlert2: match site style (dark modal, brand blues on actions/icons)
+
+.swal2-container {
+  background-color: rgb(0 0 0 / 0.6);
+}
+
+.swal2-popup {
+  background-color: #000;
+  border: 1px solid #4b5563;
+  border-radius: 0.375rem;
+  color: #fff;
+
+  .swal2-title,
+  .swal2-html-container {
+    color: #fff;
+  }
+}
+
+.swal2-icon {
+  &.swal2-success {
+    [class^='swal2-success-line'] {
+      background-color: #fff;
+    }
+
+    .swal2-success-ring {
+      border-color: var(--hd-light-blue);
+    }
+  }
+
+  &.swal2-error {
+    [class^='swal2-x-line'] {
+      background-color: var(--hd-light-blue);
+    }
+  }
+}
+
+.swal2-styled {
+  &.swal2-confirm {
+    background-color: var(--hd-dark-blue);
+    color: #fff;
+    border: none;
+    border-radius: 0.375rem;
+    font-family: var(--font-body), sans-serif;
+    font-size: 1.125rem;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: var(--hd-light-blue);
+    }
+  }
+
+  &.swal2-cancel {
+    background-color: transparent;
+    color: #9ca3af;
+    border: 1px solid #4b5563;
+    border-radius: 0.375rem;
+
+    &:hover {
+      color: #fff;
+      border-color: #6b7280;
+    }
+  }
+}
