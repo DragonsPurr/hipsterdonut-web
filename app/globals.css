@@ -2,8 +2,10 @@
 
 @theme {
   --font-title: coffee-service, sans-serif;
-  --font-body: ff-good-headline-web-pro, sans-serif;
+  --font-body: blakely, sans-serif;
+  --font-sans: var(--font-body);
   /* font-family cannot include weight — use font-weight separately (Typekit maps weights by numeric value) */
+  --font-body-weight: 300;
   --font-body-bold-weight: 700;
 }
 
@@ -32,7 +34,7 @@
 }
 
 @utility hd-page-header {
-  @apply font-title text-4xl md:text-[60px]
+  @apply font-title text-5xl md:text-[68px]
   text-(--hd-title-yellow) leading-none mb-8 md:mb-12;
   text-shadow: 2px 2px 0 rgb(0 0 0 / 1);
 }
@@ -93,18 +95,38 @@
   @apply font-body text-xl md:text-2xl;
 }
 
-@utility hd-nav-bar {
-  @apply bg-(--hd-alt-green) w-full flex 
-  justify-center pt-2.5 md:pr-[100px] 
-  sticky top-0 z-50 border-b-4 border-(--hd-dark-blue) 
-  pb-2 px-3 md:px-0
+@utility hd-site-header {
+  @apply sticky top-0 z-50 w-full
+  bg-(--hd-alt-green)
+  border-b-4 border-(--hd-dark-blue)
   drop-shadow-[2px_2px_4px_rgb(0_0_0)];
 }
 
+@utility hd-nav-bar {
+  @apply bg-(--hd-alt-green) w-full flex
+  justify-center pt-1.5 pb-1.5 px-3 md:px-0 md:pr-[100px];
+}
+
+@utility hd-nav-bar-embedded {
+  @apply border-b-0;
+}
+
+@utility hd-nav-items {
+  @apply flex flex-wrap justify-end items-center gap-2 md:gap-3;
+}
+
+@utility hd-nav-item-link {
+  @apply font-title text-(--hd-title-yellow)
+  hover:text-(--hd-donut-pink)
+  focus:text-(--hd-donut-pink)
+  no-underline;
+  text-shadow: 1px 1px 0 rgb(0 0 0 / 1);
+}
+
 @utility hd-footer-bar {
-  @apply md:fixed md:bottom-0 md:left-0 md:right-0 
-  z-10 bg-(--hd-alt-green) w-full py-3 md:py-4 
-  border-t-4 border-(--hd-dark-blue) pt-2
+  @apply md:fixed md:bottom-0 md:left-0 md:right-0
+  z-10 bg-(--hd-alt-green) w-full py-2
+  border-t-4 border-(--hd-dark-blue)
   drop-shadow-[2px_2px_4px_rgb(0_0_0)];
 }
 
@@ -125,22 +147,11 @@
 }
 
 @utility hd-nav-logo {
-  @apply w-36 sm:w-44 md:w-60 h-auto;
-}
-
-@utility hd-nav-item {
-  @apply flex flex-wrap justify-end gap-2 md:gap-4 
-  font-title text-(--hd-title-yellow) 
-  hover:text-(--hd-donut-pink)
-  focus:text-(--hd-donut-pink)
-  text-lg md:text-4xl;
-  text-shadow: 1.5px 1.5px 0 rgb(0 0 0 / 1);
+  @apply w-28 sm:w-32 md:w-44 h-auto;
 }
 
 @utility hd-nav-item-active {
-  @apply text-(--hd-donut-pink) no-underline 
-  hover:text-(--hd-light-blue)
-  focus:text-(--hd-light-blue);
+  @apply text-(--hd-donut-pink) hover:text-(--hd-light-blue) focus:text-(--hd-light-blue);
 }
 
 @utility hd-form-label {
@@ -158,19 +169,25 @@
 @utility hd-form-button {
   @apply font-title text-lg px-4 py-2 
   rounded-md bg-(--hd-dark-blue) 
-  text-white hover:bg-(--hd-light-blue)
+  text-white no-underline hover:bg-(--hd-light-blue)
+  drop-shadow-[2px_2px_0_rgb(0_0_0)];
+  text-shadow: 1px 1px 0 rgb(0 0 0 / 1);
+}
+
+@utility hd-contact-card {
+  @apply rounded-lg border border-(--hd-gray-600) bg-white/80 p-6 md:p-8
   drop-shadow-[2px_2px_0_rgb(0_0_0)];
 }
 
 @utility hd-main-content {
-  @apply flex-1 flex justify-center items-start 
-  md:items-center pt-12 px-4 pb-28 md:pb-24;
+  @apply flex-1 flex justify-center items-start
+  md:items-center pt-12 px-4 pb-28 md:pb-24 min-w-0;
 }
 
 @layer utilities {
   /* Brand Colors */
   :root {
-    --hd-bkgd-color: #ffffff;
+    --hd-bkgd-color: #dcdcdc;
     --hd-light-blue: #74d3fd;
     --hd-dark-blue: #64aecc;
     --hd-alt-green: #84c8bd;
@@ -180,7 +197,8 @@
     --hd-title-yellow: #f7931e;
     --hd-gray-800: #1f2937;
     --hd-gray-600: #4b5563;
-    --hd-donut-bg-tile: url('https://dp-hd-assets.tor1.digitaloceanspaces.com/brand/donut-bg.png');
+    /* Set at runtime from layout via siteAssets.donutBgTile (OVH proxy) */
+    --hd-donut-bg-tile: none;
   }
 
   html {
@@ -190,21 +208,16 @@
 
   body {
     @apply text-black min-h-full m-0;
-    font-family:
-      var(--font-title),
-      var(--font-body),
-      -apple-system,
-      BlinkMacSystemFont,
-      'Times New Roman',
-      serif;
+    font-family: var(--font-body), sans-serif;
+    font-weight: var(--font-body-weight);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--hd-bkgd-color);
-    /* ~25% tile visibility: 75% opaque wash over the repeat layer.
+    /* ~25% tile visibility: ~75% opaque wash over the repeat layer.
        Avoid color-mix(..., transparent): in sRGB, transparent is rgba(0,0,0,0) and can mix
        to an effectively opaque white, hiding the tile. Use explicit alpha instead. */
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)),
+      linear-gradient(rgba(220, 220, 220, 0.82), rgba(220, 220, 220, 0.82)),
       var(--hd-donut-bg-tile);
     background-size: 100% 100%, auto;
     background-position: 0 0, 0 0;

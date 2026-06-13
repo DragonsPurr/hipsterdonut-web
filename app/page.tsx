@@ -11,6 +11,7 @@ export default function Home() {
           className="home-page-logo"
           width={400}
           height={400}
+          priority
         />
       </div>
       <div className="flex justify-center md:justify-end items-center font-body-bold text-shadow-lg text-3xl sm:text-4xl md:text-[40px] leading-tight md:leading-none px-2 md:px-0 text-center md:text-left">

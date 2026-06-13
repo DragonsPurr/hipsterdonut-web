@@ -33,7 +33,7 @@ const mockGetAboutPageContent = getAboutPageContent as jest.MockedFunction<typeo
 const mockIsSanityConfigured = isSanityConfigured as jest.MockedFunction<typeof isSanityConfigured>;
 
 const mockCmsAboutPage = {
-  portraitImage: null,
+  portraitImage: { _type: 'image', asset: { _ref: 'image-portrait' } },
   whoWeAreTitle: 'Who We Are',
   whoWeAreBody: [
     {
@@ -74,10 +74,10 @@ describe('About page', () => {
     expect(img).toHaveAttribute('alt', 'Kayt and Ryan');
   });
 
-  it('profile image has correct src', async () => {
+  it('profile image src comes from Sanity', async () => {
     await renderAboutPage();
     const img = screen.getByRole('img', { name: /ryan/i });
-    expect(img).toHaveAttribute('src', expect.stringContaining('kayt-and-ryan.png'));
+    expect(img.getAttribute('src')).toContain('sanity-image.jpg');
   });
 
   it('renders PortableText for each section when CMS provides body fields', async () => {
@@ -91,9 +91,19 @@ describe('About page', () => {
     expect(screen.getByText('What We Make')).toBeInTheDocument();
   });
 
+  it('renders studio prompt when portrait image is missing', async () => {
+    mockGetAboutPageContent.mockResolvedValueOnce({
+      ...mockCmsAboutPage,
+      portraitImage: null,
+    });
+    await renderAboutPage();
+    expect(screen.getByText(/no about page content yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/\/studio/)).toBeInTheDocument();
+  });
+
   it('renders no PortableText when body fields are empty', async () => {
     mockGetAboutPageContent.mockResolvedValueOnce({
-      portraitImage: null,
+      portraitImage: mockCmsAboutPage.portraitImage,
       whoWeAreTitle: 'Who We Are',
       whoWeAreBody: null,
       whatWeMakeTitle: 'What We Make',
@@ -103,23 +113,24 @@ describe('About page', () => {
     expect(screen.queryByTestId('portable-text-placeholder')).not.toBeInTheDocument();
   });
 
-  it('renders No Content when Sanity returns no document', async () => {
+  it('renders studio prompt when Sanity returns no document', async () => {
     mockGetAboutPageContent.mockResolvedValueOnce(null);
     await renderAboutPage();
-    expect(screen.getByText('No Content')).toBeInTheDocument();
+    expect(screen.getByText(/no about page content yet/i)).toBeInTheDocument();
   });
 
-  it('renders error when Sanity is not configured', async () => {
+  it('renders env setup message when Sanity is not configured', async () => {
     mockIsSanityConfigured.mockReturnValueOnce(false);
     const ui = await About();
     render(ui);
-    expect(screen.getByText('Error Connecting to Content Backend')).toBeInTheDocument();
+    expect(screen.getByText(/NEXT_PUBLIC_SANITY_PROJECT_ID/i)).toBeInTheDocument();
+    expect(screen.getByText(/NEXT_PUBLIC_SANITY_DATASET/i)).toBeInTheDocument();
   });
 
   it('renders error when Sanity fetch throws', async () => {
     mockGetAboutPageContent.mockRejectedValueOnce(new Error('network'));
     const ui = await About();
     render(ui);
-    expect(screen.getByText('Error Connecting to Content Backend')).toBeInTheDocument();
+    expect(screen.getByText(/could not load about page content/i)).toBeInTheDocument();
   });
 });

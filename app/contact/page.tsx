@@ -1,138 +1,102 @@
-'use client';
+import { contactLinks } from '@/app/lib/contact-links';
+import { siteInfo } from '@/app/lib/constants';
+import { BoxIcon } from '@/components/icons/BoxIcon';
+import { boxiconsContactEmail, boxiconsContactPhone } from '@/components/icons/boxicons-contact';
+import { MidCenturySectionBackground } from '@/components/MidCenturySectionBackground';
+import { PageTitle } from '@/components/PageTitle';
+import { SectionTitle } from '@/components/SectionTitle';
+import { ShapeIcon } from '@/components/ShapeIcon';
+import { ShapeLink } from '@/components/ShapeLink';
+import type { Metadata } from 'next';
 
-import { useRef } from 'react';
-import Image from 'next/image';
-import emailjs from '@emailjs/browser';
-import Swal from 'sweetalert2';
-import { socialMedia, siteInfo, envConfig, externalLinkAttributes } from "@/app/lib/constants";
+export const metadata: Metadata = {
+  title: `Contact | ${siteInfo.name}`,
+  description: `Get in touch with ${siteInfo.name}.`,
+};
 
 export default function Contact() {
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const handleSubmit = (e: { preventDefault(): void; currentTarget: HTMLFormElement }) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (!envConfig.emailjs.serviceId || !envConfig.emailjs.templateId
-      || !envConfig.emailjs.userId) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Configuration error',
-        text: 'Email service is not configured.',
-      });
-      return;
-    }
-    emailjs.sendForm(envConfig.emailjs.serviceId,
-      envConfig.emailjs.templateId, form, {
-        publicKey: envConfig.emailjs.userId,
-      }).then(
-      () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Message Sent Successfully',
-        });
-        form.reset();
-      },
-      (error: { text?: string }) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops, something went wrong',
-          text: error.text,
-        });
-      }
-    );
-  };
-
   return (
-    <div className="container mx-auto">
-      <div className="hd-page-header">
-        <strong>Contact</strong>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="hd-body-text-bold text-shadow-lg">
-          <p>
-            If you have any questions, comments, or concerns, please feel free to reach out to us on social media.
-            <br /><br />
-            <a href={socialMedia.bluesky} {...externalLinkAttributes}>
-              <Image
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Bluesky_Logo.svg"
-                alt={`${siteInfo.name} on Bluesky`}
-                className="inline mr-5 grayscale drop-shadow-[2px_2px_0_rgb(0_0_0)] contrast-200 brightness-200"
-                width={32}
-                height={32}
-              />
-            </a>
-            <a href={socialMedia.heycafe} {...externalLinkAttributes}>
-              <Image
-                src="https://assets.heycafecdn.com/logos/svg/logo_round_transparent_purple.svg?cache=wqn4mia5vlfugr4"
-                alt={`${siteInfo.name} on Hey.Café`}
-                className="inline mr-5 grayscale drop-shadow-[2px_2px_0_rgb(0_0_0)] contrast-200 invert"
-                width={32}
-                height={32}
-              />
-            </a>
-            <a href={socialMedia.eh} {...externalLinkAttributes}>
-              <Image
-                src="https://dp-assets.tor1.digitaloceanspaces.com/socials/Eh-Logo.svg"
-                alt={`${siteInfo.name} on Eh!`}
-                className="inline mr-5 grayscale drop-shadow-[2px_2px_0_rgb(0_0_0)] contrast-200 invert"
-                width={32}
-                height={32}
-              />
-            </a>
-            <br /><br />
-            Additionally, feel free to contact us via email through the form on this page.
-          </p>
-        </div>
-        <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="from_name" className="hd-form-label">
-              <strong>Your Name</strong>
-            </label>
-            <input
-              id="from_name"
-              type="text"
-              name="from_name"
-              placeholder="Your Name"
-              className="hd-form-input"
+    <div className="container mx-auto max-w-4xl">
+      <PageTitle text="Get in touch" seed="contact" />
+      <p className="hd-body-text-bold mb-8 md:mb-10">
+        Want to reach us? We&apos;d love to hear from you. Here&apos;s how you can get in touch.
+      </p>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <section aria-labelledby="contact-phone-heading" className="relative isolate flex flex-col">
+          <div className="flex justify-center">
+            <SectionTitle
+              text="Talk to us"
+              seed="contact-phone"
+              id="contact-phone-heading"
+              as="h2"
             />
           </div>
-          <div>
-            <label htmlFor="from_email" className="hd-form-label">
-              <strong>Email Address</strong>
-            </label>
-            <input
-              id="from_email"
-              type="email"
-              name="from_email"
-              placeholder="Enter email"
-              className="hd-form-input"
+          <MidCenturySectionBackground seed="contact-phone-body" className="flex-1">
+            <div className="space-y-4">
+              <div className="flex justify-center">
+                <ShapeIcon icon={boxiconsContactPhone} seed="contact-phone-icon" />
+              </div>
+              <p className="hd-body-text-bold text-lg md:text-xl">
+                Questions about our apparel, sizing, or an existing order? Give us a call during
+                business hours.
+              </p>
+              <p className="text-center">
+                <a
+                  href={contactLinks.phone}
+                  className="font-title text-xl text-(--hd-title-yellow) no-underline hover:text-(--hd-light-blue) md:text-2xl [text-shadow:2px_2px_0_rgb(0_0_0)]"
+                >
+                  {siteInfo.phone}
+                </a>
+              </p>
+              <p className="hd-body-text-bold text-center text-base text-(--hd-gray-600)">
+                {siteInfo.hours}
+              </p>
+            </div>
+          </MidCenturySectionBackground>
+        </section>
+
+        <section
+          aria-labelledby="contact-email-heading"
+          className="relative isolate flex flex-col"
+        >
+          <div className="flex justify-center">
+            <SectionTitle
+              text="Contact support"
+              seed="contact-email"
+              id="contact-email-heading"
+              as="h2"
             />
           </div>
-          <div>
-            <label htmlFor="subject" className="hd-form-label">
-              <strong>Subject</strong>
-            </label>
-            <input
-              id="subject"
-              type="text"
-              name="subject"
-              placeholder="Enter Subject"
-              className="hd-form-input"
-            />
-          </div>
-          <div>
-            <label htmlFor="message" className="hd-form-label">
-              <strong>Message</strong>
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={5}
-              className="hd-form-input"
-            />
-          </div>
-          <button type="submit" className="hd-form-button">Submit</button>
-        </form>
+          <MidCenturySectionBackground seed="contact-email-body" className="flex-1">
+            <div className="flex flex-col space-y-4">
+              <div className="flex justify-center">
+                <ShapeIcon icon={boxiconsContactEmail} seed="contact-email-icon" />
+              </div>
+              <p className="hd-body-text-bold flex-1 text-lg md:text-xl">
+                Need help with an order, shipping, or wholesale inquiries? Send us a message and
+                we&apos;ll get back to you as soon as we can.
+              </p>
+              <div className="flex flex-col items-center gap-4">
+                <ShapeLink
+                  href={contactLinks.productSupport}
+                  text="Product Support"
+                  seed="contact-product-support"
+                />
+                <ShapeLink
+                  href={contactLinks.generalInquiry}
+                  text="General Inquiries"
+                  seed="contact-general-inquiry"
+                />
+                <ShapeLink
+                  href={contactLinks.billingInquiry}
+                  text="Billing Inquiries"
+                  seed="contact-billing-inquiry"
+                />
+              </div>
+            </div>
+          </MidCenturySectionBackground>
+        </section>
       </div>
     </div>
   );

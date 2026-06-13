@@ -1,20 +1,25 @@
 import type { PortableTextBlock } from '@portabletext/types';
 import { PortableText, type PortableTextComponents } from '@portabletext/react';
 import Image from 'next/image';
+import { MidCenturySectionBackground } from '@/components/MidCenturySectionBackground';
+import { SectionTitle } from '@/components/SectionTitle';
 
-const bodyComponents: PortableTextComponents = {
+const aboutPortableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
   },
   marks: {
-    strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+    strong: ({ children }) => (
+      <strong className="text-(--hd-donut-pink) font-bold">{children}</strong>
+    ),
     em: ({ children }) => <em>{children}</em>,
   },
 };
 
 export type AboutPageViewProps =
-  | { status: 'error' }
+  | { status: 'unconfigured' }
   | { status: 'no-content' }
+  | { status: 'error' }
   | {
       status: 'ok';
       portraitUrl: string;
@@ -25,11 +30,38 @@ export type AboutPageViewProps =
       whatWeMakeBody: PortableTextBlock[] | null;
     };
 
+function AboutSection({
+  heading,
+  content,
+  seed,
+}: {
+  heading: string;
+  content: PortableTextBlock[] | null;
+  seed: string;
+}) {
+  return (
+    <div className="hd-body-text-bold text-shadow-lg relative isolate">
+      <SectionTitle text={heading} seed={seed} />
+      {content?.length ? (
+        <MidCenturySectionBackground seed={`${seed}-body`}>
+          <div className="[&_p+p]:mt-4">
+            <PortableText value={content} components={aboutPortableTextComponents} />
+          </div>
+        </MidCenturySectionBackground>
+      ) : null}
+    </div>
+  );
+}
+
 export function AboutPageView(props: AboutPageViewProps) {
-  if (props.status === 'error') {
+  if (props.status === 'unconfigured') {
     return (
       <div className="container mx-auto px-4">
-        <p className="hd-body-text">Error Connecting to Content Backend</p>
+        <p className="hd-body-text mb-6">
+          Add <code className="text-sm">NEXT_PUBLIC_SANITY_PROJECT_ID</code> and{' '}
+          <code className="text-sm">NEXT_PUBLIC_SANITY_DATASET</code> to start loading the About
+          page from Sanity.
+        </p>
       </div>
     );
   }
@@ -37,7 +69,17 @@ export function AboutPageView(props: AboutPageViewProps) {
   if (props.status === 'no-content') {
     return (
       <div className="container mx-auto px-4">
-        <p className="hd-body-text">No Content</p>
+        <p className="hd-body-text">
+          No About page content yet. Add the About Page document in <code className="text-sm">/studio</code>.
+        </p>
+      </div>
+    );
+  }
+
+  if (props.status === 'error') {
+    return (
+      <div className="container mx-auto px-4">
+        <p className="hd-body-text">Could not load About page content. Try again later.</p>
       </div>
     );
   }
@@ -71,18 +113,9 @@ export function AboutPageView(props: AboutPageViewProps) {
                 height="100%"
               >
                 <feComponentTransfer>
-                  <feFuncR
-                    type="discrete"
-                    tableValues="0 0.2 0.4 0.6 0.8 1"
-                  />
-                  <feFuncG
-                    type="discrete"
-                    tableValues="0 0.2 0.4 0.6 0.8 1"
-                  />
-                  <feFuncB
-                    type="discrete"
-                    tableValues="0 0.2 0.4 0.6 0.8 1"
-                  />
+                  <feFuncR type="discrete" tableValues="0 0.2 0.4 0.6 0.8 1" />
+                  <feFuncG type="discrete" tableValues="0 0.2 0.4 0.6 0.8 1" />
+                  <feFuncB type="discrete" tableValues="0 0.2 0.4 0.6 0.8 1" />
                 </feComponentTransfer>
               </filter>
             </defs>
@@ -99,22 +132,8 @@ export function AboutPageView(props: AboutPageViewProps) {
             </div>
           </div>
         </div>
-        <div className="hd-body-text-bold text-shadow-lg">
-          <p className="mb-4">
-            <strong className="hd-section-header">{whoWeAreTitle}</strong>
-          </p>
-          {whoWeAreBody?.length ? (
-            <PortableText value={whoWeAreBody} components={bodyComponents} />
-          ) : null}
-        </div>
-        <div className="hd-body-text-bold text-shadow-lg">
-          <p className="mb-4">
-            <strong className="hd-section-header">{whatWeMakeTitle}</strong>
-          </p>
-          {whatWeMakeBody?.length ? (
-            <PortableText value={whatWeMakeBody} components={bodyComponents} />
-          ) : null}
-        </div>
+        <AboutSection heading={whoWeAreTitle} content={whoWeAreBody} seed="about-who-we-are" />
+        <AboutSection heading={whatWeMakeTitle} content={whatWeMakeBody} seed="about-what-we-make" />
       </div>
     </div>
   );

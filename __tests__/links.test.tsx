@@ -32,8 +32,6 @@ jest.mock('@/app/lib/about', () => ({
   resolvePortraitAlt: () => 'Kayt and Ryan',
 }));
 
-jest.mock('sweetalert2', () => ({ __esModule: true, default: { fire: jest.fn() } }));
-
 const mockFetch = (url: string) => {
   if (url.startsWith('/api/portfolio'))
     return Promise.resolve({
@@ -46,7 +44,7 @@ beforeAll(() => {
   global.fetch = mockFetch as typeof fetch;
 });
 
-const VALID_INTERNAL_PATHS = ['/', '/about', '/portfolio', '/contact'];
+const VALID_INTERNAL_PATHS = ['/', '/about', '/portfolio', '/contact', '/shop'];
 
 function getAllLinks(container: HTMLElement): HTMLAnchorElement[] {
   return Array.from(container.querySelectorAll('a[href]'));
@@ -81,14 +79,16 @@ describe('All links have valid hrefs', () => {
     });
   });
 
-  it('Contact page social links have valid hrefs', () => {
+  it('Contact page links have valid hrefs', () => {
     const { container } = render(<Contact />);
     const hrefs = getLinkHrefs(container);
-    expect(hrefs.length).toBeGreaterThanOrEqual(3);
+    expect(hrefs.length).toBeGreaterThanOrEqual(4);
     hrefs.forEach((href) => {
       expect(href).toBeTruthy();
-      expect(href).toMatch(/^https?:\/\//);
+      expect(href).toMatch(/^(https?:\/\/|tel:|mailto:)/);
     });
+    expect(hrefs.some((href) => href.startsWith('tel:'))).toBe(true);
+    expect(hrefs.some((href) => href.startsWith('mailto:'))).toBe(true);
   });
 
   it('Home page only links to the Dragon\'s Purr brand site in content', () => {
@@ -130,7 +130,7 @@ describe('All expected links are present and resolve to correct targets', () => 
     expect(hrefs).toContain('/about');
     expect(hrefs).toContain('/portfolio');
     expect(hrefs).toContain('/contact');
-    expect(hrefs).toContain('https://shop.dragonspurr.ca');
+    expect(hrefs).toContain('/shop');
   });
 
   it('Footer contains expected external links', () => {
@@ -140,11 +140,10 @@ describe('All expected links are present and resolve to correct targets', () => 
     expect(hrefs.filter((h) => h === 'https://boxingoctop.us').length).toBe(1);
   });
 
-  it('Contact page social links resolve to expected URLs', () => {
+  it('Contact page phone and email links resolve to expected targets', () => {
     const { container } = render(<Contact />);
     const hrefs = getLinkHrefs(container);
-    expect(hrefs).toContain('https://bsky.app/profile/dragonspurr.bsky.social');
-    expect(hrefs).toContain('https://hey.cafe/@dragonspurr');
-    expect(hrefs).toContain('https://ehnw.ca/u/dragonspurr');
+    expect(hrefs).toContain('tel:14165551234');
+    expect(hrefs.filter((href) => href.startsWith('mailto:info@hipsterdonut.ca')).length).toBe(3);
   });
 });

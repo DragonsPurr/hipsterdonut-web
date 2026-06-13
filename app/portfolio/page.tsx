@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
+import { PageTitle } from '@/components/PageTitle';
 
 const PHOTOS_PER_PAGE = 18;
 
@@ -74,11 +75,17 @@ export default function Portfolio() {
   const hasPrev = page > 1;
   const hasNext = page < data.pages;
 
-  const cellClass =
-    'block w-full min-w-0 aspect-square overflow-hidden rounded-lg bg-gray-800/60 focus:outline-hidden focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black cursor-pointer';
+  const cellButtonClass =
+    'block w-full min-w-0 p-0 border-0 text-left focus:outline-hidden focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-black cursor-pointer';
+
+  const cellImageClass =
+    'aspect-square w-full overflow-hidden rounded-lg bg-gray-800/60';
+
+  const portfolioPhotoShadow = 'drop-shadow-[4px_4px_6px_rgb(0_0_0/0.45)]';
 
   return (
     <div className="container mx-auto">
+      <PageTitle text="Portfolio" seed="portfolio" />
       {error && (
         <div className="mb-6 rounded-lg bg-red-900/50 border border-red-700 px-4 py-3 text-red-200" role="alert">
           {error}
@@ -102,24 +109,28 @@ export default function Portfolio() {
               <button
                 type="button"
                 onClick={() => setModalPhoto(photo)}
-                className={`${cellClass} p-0 border-0 text-left`}
+                className={cellButtonClass}
                 aria-label={photo.title ? `View ${photo.title}` : 'View portfolio image'}
               >
-                <Image
-                  src={photo.urlMedium ?? ''}
-                  alt={photo.title || 'Portfolio image'}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                  width={500}
-                  height={500}
-                />
+                <div className={portfolioPhotoShadow}>
+                  <div className={cellImageClass}>
+                    <Image
+                      src={photo.urlMedium ?? ''}
+                      alt={photo.title || 'Portfolio image'}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                      width={500}
+                      height={500}
+                    />
+                  </div>
+                </div>
               </button>
               {photo.title && (
                 <figcaption className="mt-1.5 text-center">
                   <button
                     type="button"
                     onClick={() => setModalPhoto(photo)}
-                    className="font-cormorant_garamond text-lg text-gray-300 hover:text-red-600 transition-colors focus:outline-hidden focus:underline w-full"
+                    className="font-cormorant_garamond text-lg text-(--hd-title-yellow) drop-shadow-[1px_1px_0_rgb(0_0_0)] hover:text-red-600 transition-colors focus:outline-hidden focus:underline w-full"
                   >
                     {photo.title}
                   </button>

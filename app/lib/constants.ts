@@ -1,21 +1,16 @@
-const envConfig = {
-  emailjs: {
-    serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-    templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-    userId: process.env.NEXT_PUBLIC_EMAILJS_USER_ID,
-  },
-  umamiAnalyticsId: process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID,
-};
+import { buildSiteAssetUrl } from './site-assets';
 
-const asset_base_url = "https://dp-hd-assets.tor1.digitaloceanspaces.com";
-const alt_base_url = "https://dp-assets.tor1.digitaloceanspaces.com";
+const externalLinkAttributes = { target: '_blank', rel: 'noreferrer' as const };
 
-const externalLinkAttributes = { target: "_blank", rel: "noreferrer" as const };
+/** External storefront until in-app Medusa shop ships */
+const externalShopUrl = 'https://shop.dragonspurr.ca';
 
 const siteInfo = {
   name: "Hipster Donut Apparel",
   url: "https://hipsterdonut.ca",
-  email: "info@hipsterdonut.ca",
+  productSupportEmail: "info@hipsterdonut.ca",
+  generalInquiryEmail: "info@hipsterdonut.ca",
+  billingInquiryEmail: "info@hipsterdonut.ca",
   phone: "+1 (416) 555-1234",
   address: "608-26 Carluke Crescent, Toronto, ON M2L 2J2",
   hours: "Monday - Friday: 9:00 AM - 5:00 PM",
@@ -31,11 +26,15 @@ const socialMedia = {
 };
 
 const logoTypes = {
-  wide_orig_colour: `${asset_base_url}/brand/hipsterdonut_wide-orig-colour.png`,
-  wide_alt_colour: `${asset_base_url}/brand/hipsterdonut_wide-alt-colour.png`,
-  square_orig_colour: `${asset_base_url}/brand/hipsterdonut_square-orig-colour.png`,
-  square_alt_colour: `${asset_base_url}/brand/hipsterdonut_square-alt-colour.png`,
-  favicon: `${asset_base_url}/brand/hipsterdonut_square-favicon.png`,
+  wide_orig_colour: buildSiteAssetUrl('brand/hipsterdonut_wide-orig-colour.png'),
+  wide_alt_colour: buildSiteAssetUrl('brand/hipsterdonut_wide-alt-colour.png'),
+  square_orig_colour: buildSiteAssetUrl('brand/hipsterdonut_square-orig-colour.png'),
+  square_alt_colour: buildSiteAssetUrl('brand/hipsterdonut_square-alt-colour.png'),
+  favicon: buildSiteAssetUrl('brand/hipsterdonut_square-favicon.png'),
 };
 
-export { asset_base_url, alt_base_url, externalLinkAttributes, logoTypes, siteInfo, socialMedia, envConfig };
+const siteAssets = {
+  donutBgTile: buildSiteAssetUrl('brand/donut-bkgd.png'),
+};
+
+export { externalLinkAttributes, externalShopUrl, logoTypes, siteAssets, siteInfo, socialMedia };

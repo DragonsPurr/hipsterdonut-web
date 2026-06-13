@@ -14,13 +14,21 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
+    "@aws-sdk/client-s3": "^3.1067.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^3.2.0",
+    "@iconify/react": "^6.0.2",
+    "@iconify/types": "^2.0.0",
+    "@medusajs/js-sdk": "^2.15.5",
+    "@medusajs/types": "^2.15.5",
     "@portabletext/react": "^6.0.3",
+    "@portabletext/types": "^2.0.15",
     "@sanity/dashboard": "^5.0.1",
     "@sanity/image-url": "^2.0.3",
+    "@stripe/react-stripe-js": "^6.6.0",
+    "@stripe/stripe-js": "^9.8.0",
+    "@vercel/analytics": "^2.0.1",
     "next": "^16.2.1",
     "next-sanity": "^12.1.1",
     "react": "^19.2.0",
@@ -29,8 +37,7 @@
     "sanity-plugin-asset-source-unsplash": "^7.0.5",
     "sanity-plugin-dashboard-widget-vercel": "^3.1.6",
     "sanity-plugin-umami-analytics-tool": "^1.1.1",
-    "styled-components": "^6.3.12",
-    "sweetalert2": "^11.4.0"
+    "styled-components": "^6.3.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.2",

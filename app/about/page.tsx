@@ -1,11 +1,17 @@
 import { AboutPageView } from '@/components/AboutPageView';
-import { asset_base_url } from '@/app/lib/constants';
 import { getAboutPageContent, resolvePortraitAlt } from '@/app/lib/about';
+import { siteInfo } from '@/app/lib/constants';
 import { isSanityConfigured, urlFor } from '@/app/lib/sanity';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: `About | ${siteInfo.name}`,
+  description: `Learn about ${siteInfo.name}.`,
+};
 
 export default async function About() {
   if (!isSanityConfigured()) {
-    return <AboutPageView status="error" />;
+    return <AboutPageView status="unconfigured" />;
   }
 
   let content;
@@ -15,14 +21,16 @@ export default async function About() {
     return <AboutPageView status="error" />;
   }
 
-  if (content === null) {
+  if (content === null || content.portraitImage == null) {
     return <AboutPageView status="no-content" />;
   }
 
-  const portraitUrl =
-    content.portraitImage != null
-      ? urlFor(content.portraitImage).width(1000).height(1000).fit('crop').auto('format').url()
-      : `${asset_base_url}/kayt-and-ryan.png`;
+  const portraitUrl = urlFor(content.portraitImage)
+    .width(1000)
+    .height(1000)
+    .fit('crop')
+    .auto('format')
+    .url();
   const portraitAlt = resolvePortraitAlt(content);
 
   return (

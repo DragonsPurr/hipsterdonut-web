@@ -1,17 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { alt_base_url } from "@/app/lib/constants";
+import { buildSiteAssetUrl } from "@/app/lib/site-assets";
+import { PageTitle } from "@/components/PageTitle";
 
 export default function NotFound() {
   return (
     <div className="container mx-auto">
-      <div className="hd-page-header">
-        <strong>Page Not Found</strong>
-      </div>
+      <PageTitle text="Page Not Found" seed="not-found" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="relative max-w-md aspect-4/3">
           <Image
-            src={`${alt_base_url}/eeby-deeby-404.jpg`}
+            src={buildSiteAssetUrl('eeby-deeby-404.jpg')}
             alt="404"
             fill
             className="object-contain drop-shadow-[4px_4px_8px_rgb(0_0_0)]"

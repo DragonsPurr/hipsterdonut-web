@@ -3,6 +3,14 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
+    localPatterns: [
+      {
+        pathname: '/api/assets/**',
+      },
+      {
+        pathname: '/api/shop/avatar/**',
+      },
+    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -11,12 +19,22 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'dp-assets.tor1.digitaloceanspaces.com',
+        hostname: 'dp-hd-assets.s3.ca-east-tor.io.cloud.ovh.net',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'dp-hd-assets.tor1.digitaloceanspaces.com',
+        hostname: 'hipsterdonut-site-assets.s3.ca-east-tor.io.cloud.ovh.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'hipsterdonut-user-assets.s3.ca-east-tor.io.cloud.ovh.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'dp-shop-assets.s3.ca-east-tor.io.cloud.ovh.net',
         pathname: '/**',
       },
       {
@@ -27,6 +45,17 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'assets.heycafecdn.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'shopadmin.dragonspurr.ca',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '9000',
         pathname: '/**',
       },
     ],

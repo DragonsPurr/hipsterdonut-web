@@ -5,7 +5,7 @@ export function Footer() {
 
   return (
     <footer className="hd-footer-bar">
-      <div className="text-center font-body text-base md:text-lg text-black px-4">
+      <div className="text-center font-body-bold text-sm md:text-base text-black px-4">
         Site design by{' '}
         <a href="https://boxingoctop.us" className="hd-footer-link" {...externalLinkAttributes}>
           Boxing Octopus Creative
