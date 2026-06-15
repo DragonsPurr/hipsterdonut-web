@@ -13,7 +13,7 @@ export function ShapeLink({ href, text, seed, className }: ShapeLinkProps) {
     <MidCenturyAbstractTitle seed={seed} size="link" context="link" className={className}>
       <a
         href={href}
-        className="font-title text-lg text-(--hd-title-yellow) no-underline hover:text-(--hd-donut-pink) md:text-xl [text-shadow:1px_1px_0_rgb(0_0_0)]"
+        className="font-title text-xl text-(--hd-title-yellow) no-underline hover:text-(--hd-donut-pink) md:text-2xl [text-shadow:1px_1px_0_rgb(0_0_0)]"
       >
         {text}
       </a>

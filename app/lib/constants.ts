@@ -2,27 +2,16 @@ import { buildSiteAssetUrl } from './site-assets';
 
 const externalLinkAttributes = { target: '_blank', rel: 'noreferrer' as const };
 
-/** External storefront until in-app Medusa shop ships */
-const externalShopUrl = 'https://shop.dragonspurr.ca';
-
 const siteInfo = {
   name: "Hipster Donut Apparel",
   url: "https://hipsterdonut.ca",
-  productSupportEmail: "info@hipsterdonut.ca",
-  generalInquiryEmail: "info@hipsterdonut.ca",
-  billingInquiryEmail: "info@hipsterdonut.ca",
-  phone: "+1 (416) 555-1234",
+  productSupportEmail: "productsupport@dragonspurr.ca",
+  generalInquiryEmail: "info@dragonspurr.ca",
+  billingInquiryEmail: "billing@dragonspurr.ca",
+  phone: "+1 (289) 269-2529",
   address: "608-26 Carluke Crescent, Toronto, ON M2L 2J2",
   hours: "Monday - Friday: 9:00 AM - 5:00 PM",
   description: "Hipster Donut Apparel is a Dragon's Purr Brand that specializes in apparel featuring dopey-as-hell pop-culture mashups, culturejamming, and overall sardonic, eye-rolling humour befitting its obvious elder millennial audience.",
-};
-
-const socialMedia = {
-  bluesky: "https://bsky.app/profile/dragonspurr.bsky.social",
-  heycafe: "https://hey.cafe/@dragonspurr",
-  eh: "https://ehnw.ca/u/dragonspurr",
-  instagram: "https://www.instagram.com/dragonspurr",
-  facebook: "https://www.facebook.com/dragonspurr",
 };
 
 const logoTypes = {
@@ -37,4 +26,4 @@ const siteAssets = {
   donutBgTile: buildSiteAssetUrl('brand/donut-bkgd.png'),
 };
 
-export { externalLinkAttributes, externalShopUrl, logoTypes, siteAssets, siteInfo, socialMedia };
+export { externalLinkAttributes, logoTypes, siteAssets, siteInfo };

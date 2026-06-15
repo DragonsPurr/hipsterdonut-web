@@ -1,8 +1,9 @@
 import Script from 'next/script';
+import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/next';
 import { LayoutSwitcher } from './LayoutSwitcher';
+import { SiteDonutBgTileCache } from '@/components/SiteDonutBgTileCache';
 import { logoTypes, siteAssets, siteInfo } from './lib/constants';
-import { buildSiteAssetBrowserCacheBootstrapScript } from './lib/site-assets';
 import {
   getCustomerDisplayName,
   getCustomerInitials,
@@ -18,28 +19,29 @@ export const viewport = {
   themeColor: '#000000',
 };
 
-export const metadata = {
-  title: siteInfo.name,
+export const metadata: Metadata = {
+  metadataBase: new URL(siteInfo.url),
+  title: {
+    default: siteInfo.name,
+    template: `%s | ${siteInfo.name}`,
+  },
   description: siteInfo.description,
   openGraph: {
-    url: siteInfo.url,
+    type: 'website',
+    siteName: siteInfo.name,
+    title: siteInfo.name,
+    description: siteInfo.description,
+    images: [
+      {
+        url: logoTypes.wide_orig_colour,
+        alt: siteInfo.name,
+      },
+    ],
   },
   icons: {
     icon: logoTypes.favicon,
     apple: logoTypes.favicon,
   },
-};
-
-export const UmamiAnalytics = () => {
-  const websiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
-  if (!websiteId) {
-    return <></>;
-  }
-  return (
-    <>
-      <Script async src="https://umami.is/script.js" data-website-id={websiteId} />
-    </>
-  );
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -66,23 +68,16 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/lzy8dag.css"></link>
         <link rel="preload" as="image" href={siteAssets.donutBgTile} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: buildSiteAssetBrowserCacheBootstrapScript(siteAssets.donutBgTile),
-          }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              window.gtag = gtag;
-            `,
-          }}
-        />
       </head>
       <body className="text-black min-h-screen flex flex-col">
-        <UmamiAnalytics />
+        <SiteDonutBgTileCache assetUrl={siteAssets.donutBgTile} />
+        <Script id="gtag-init" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+          `}
+        </Script>
         <LayoutSwitcher
           shopCategories={shopCategories}
           cart={cart}

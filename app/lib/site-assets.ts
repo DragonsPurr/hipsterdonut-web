@@ -23,9 +23,32 @@ export function buildSiteAssetUrl(objectKey: string): string {
   return `${SITE_ASSETS_PROXY_BASE}/${encoded}`;
 }
 
-/** Inline head script: apply a cached blob URL immediately, then warm Cache Storage. */
-export function buildSiteAssetBrowserCacheBootstrapScript(assetUrl: string): string {
-  return `(function(){try{var url=${JSON.stringify(assetUrl)};var cacheName=${JSON.stringify(SITE_ASSETS_BROWSER_CACHE_NAME)};if(!('caches' in window))return;caches.open(cacheName).then(function(cache){return cache.match(url).then(function(cached){if(cached){return cached.blob().then(function(blob){document.documentElement.style.setProperty('--hd-donut-bg-tile',"url('"+URL.createObjectURL(blob)+"')");});}return fetch(url,{credentials:'same-origin'}).then(function(res){if(res.ok)return cache.put(url,res.clone());});});});}catch(e){}})();`;
+/** After hydration: use a cached blob for the bg tile when available, else warm Cache Storage. */
+export async function applySiteAssetBrowserCache(assetUrl: string): Promise<void> {
+  if (typeof window === 'undefined' || !('caches' in window)) {
+    return;
+  }
+
+  try {
+    const cache = await caches.open(SITE_ASSETS_BROWSER_CACHE_NAME);
+    const cached = await cache.match(assetUrl);
+
+    if (cached) {
+      const blob = await cached.blob();
+      document.documentElement.style.setProperty(
+        '--hd-donut-bg-tile',
+        `url('${URL.createObjectURL(blob)}')`,
+      );
+      return;
+    }
+
+    const res = await fetch(assetUrl, { credentials: 'same-origin' });
+    if (res.ok) {
+      await cache.put(assetUrl, res.clone());
+    }
+  } catch {
+    // Cache Storage is best-effort; keep the server-provided asset URL.
+  }
 }
 
 export function isAllowedSiteAssetObjectKey(key: string): boolean {

@@ -3,8 +3,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { PageTitle } from '@/components/PageTitle';
+import { MidCenturySectionBackground } from '@/components/MidCenturySectionBackground';
 
 const PHOTOS_PER_PAGE = 18;
+const PORTFOLIO_CAPTION_CONTENT_CLASS = 'relative z-10 px-2 py-1.5 text-center';
 
 interface PortfolioPhoto {
   id: string;
@@ -126,14 +128,20 @@ export default function Portfolio() {
                 </div>
               </button>
               {photo.title && (
-                <figcaption className="mt-1.5 text-center">
-                  <button
-                    type="button"
-                    onClick={() => setModalPhoto(photo)}
-                    className="font-cormorant_garamond text-lg text-(--hd-title-yellow) drop-shadow-[1px_1px_0_rgb(0_0_0)] hover:text-red-600 transition-colors focus:outline-hidden focus:underline w-full"
+                <figcaption className="mt-1.5">
+                  <MidCenturySectionBackground
+                    seed={`portfolio-caption-${photo.id}`}
+                    className="mt-0"
+                    contentClassName={PORTFOLIO_CAPTION_CONTENT_CLASS}
                   >
-                    {photo.title}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setModalPhoto(photo)}
+                      className="font-cormorant_garamond font-semibold text-xl text-(--hd-title-yellow) drop-shadow-[1px_1px_0_rgb(0_0_0)] hover:text-red-600 transition-colors focus:outline-hidden focus:underline w-full"
+                    >
+                      {photo.title}
+                    </button>
+                  </MidCenturySectionBackground>
                 </figcaption>
               )}
             </figure>
@@ -227,12 +235,12 @@ export default function Portfolio() {
             </div>
             <div className="mt-4 px-2 text-white">
               {modalPhoto.title && (
-                <h2 id="modal-title" className="font-cinzel_decorative text-xl text-red-600 mb-1">
+                <h2 id="modal-title" className="font-cinzel_decorative font-bold text-xl text-red-600 mb-1">
                   {modalPhoto.title}
                 </h2>
               )}
               {modalPhoto.description && (
-                <p id="modal-description" className="font-cormorant_garamond text-lg text-gray-200">
+                <p id="modal-description" className="font-cormorant_garamond font-semibold text-lg text-gray-200">
                   {modalPhoto.description}
                 </p>
               )}
@@ -241,7 +249,7 @@ export default function Portfolio() {
                   href={modalPhoto.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-2 inline-block font-cinzel text-red-600 hover:text-red-500"
+                  className="mt-2 inline-block font-cinzel font-semibold text-red-600 hover:text-red-500"
                 >
                   View project →
                 </a>
